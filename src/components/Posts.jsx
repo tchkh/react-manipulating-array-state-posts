@@ -4,23 +4,33 @@ import { postData } from "../raw-data/post-data"
 function Posts() {
   const [posts, setPost] = useState(postData)
 
-  const handleLikeBtn = (index) => {
-    const newPost = [...posts]
-    newPost[index].likes++
-    setPost(newPost)
+  const handleLikeBtn = (postId) => {
+    setPost(
+      posts.map((post) => {
+        if (post.id === postId) {
+          post.likes++
+        }
+        return post
+      })
+    )
   }
 
-  const handleDislikeBtn = (index) => {
-    const newPost = [...posts]
-    newPost[index].likes > 0 ? newPost[index].likes-- : 0
-    setPost(newPost)
+  const handleDislikeBtn = (postId) => {
+    setPost(
+      posts.map((post) => {
+        if (post.id === postId) {
+          post.likes > 0 ? post.likes-- : 0
+        }
+        return post
+      })
+    )
   }
 
   return (
     <div className='app-wrapper'>
       <h1 className='app-title'>Posts</h1>
       <div className='post-list'>
-        {posts.map((post, index) => {
+        {posts.map((post) => {
           return (
             <div className='post-item' key={`${post.id} - ${post.title}`}>
               <div className='post-header'>
@@ -34,13 +44,13 @@ function Posts() {
               <div className='post-actions'>
                 <button
                   className='like-button'
-                  onClick={() => handleLikeBtn(index)}
+                  onClick={() => handleLikeBtn(post.id)}
                 >
                   Like
                 </button>
                 <button
                   className='dislike-button'
-                  onClick={() => handleDislikeBtn(index)}
+                  onClick={() => handleDislikeBtn(post.id)}
                 >
                   Dislike
                 </button>
